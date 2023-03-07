@@ -6,8 +6,10 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 
+const userRoute = require('./routes/user');
+
 dotenv.config();
-// Connect to database
+//Connect to database
 mongoose.connect(process.env.MONGODB_URI).then(
   () => {console.log("Connected to database!");},
   err => {
@@ -15,15 +17,14 @@ mongoose.connect(process.env.MONGODB_URI).then(
   }
 );
 
-
 const app = express();
+
 app.use(bodyParser.json({limit:"50mb"}));
 app.use(cors());
 app.use(morgan("common"));
 
-app.get("/api", (req, res) => {
-  res.status(200).json("Hello");
-})
+// Routes
+app.use("/api/user", userRoute);
 
 app.listen(8000, () => {
     console.log('Server is listening...');
