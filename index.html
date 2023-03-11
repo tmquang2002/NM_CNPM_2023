@@ -36,13 +36,13 @@
             <!--search_icon-->
 
             <div id="account">
-                <button class="sign_in_button" type="button" name="Đăng Nhập">
+                <button class="sign_in_button js-login" type="button" name="Đăng Nhập">
                     <i class="fa-solid fa-right-to-bracket i_log1"></i>
                     <i class="fa-solid fa-person-walking-dashed-line-arrow-right i_log2"></i>
                 </button>
             </div>
         </div>  <!--#header-->
-        
+
         <div class="modal js-modal">
             <div class="modal-container">
                 <div class="modal-close js-modal-close">
@@ -75,9 +75,33 @@
                 </div>
             </div>
         </div>
-        
+
     </div> <!--#main-->
     <!-- MDB -->
+
+
+    <script>
+        const loginacc = document.querySelectorAll('.js-login')
+        const modal = document.querySelector('.js-modal')
+        const modalClose = document.querySelectorAll('.js-modal-close')
+
+        function loginnn() {
+            modal.classList.add('open')
+        }
+
+        function loclose() {
+            modal.classList.remove('open')
+        }
+
+        for(const loginac of loginacc){
+            loginac.addEventListener('click',loginnn)
+        }
+        
+        for(const modalc of modalClose){
+            modalc.addEventListener('click',loclose)
+        }
+
+    </script>
 
 </body>
 </html>
