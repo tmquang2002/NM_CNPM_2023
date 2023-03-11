@@ -150,3 +150,113 @@ html{
     cursor: pointer;
 } */
 
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-container {
+    background-color: blanchedalmond;
+    width: 500px;
+    max-width: calc(100%-16px);
+    min-height: 600px;
+    position: relative;
+    
+    border-radius: 40px;
+
+    animation: modalFadeIn ease .5s;
+}
+
+.modal .modal-header {
+    background-color: chartreuse;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+.modal-close {
+    position: absolute;
+    font-size: 32px;
+    right: 5px;
+    top: 5px;
+    padding: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #fff;
+}
+
+
+.modal-body {
+    padding: 16px;
+}
+
+.modal-label {
+    display: block;
+    font-size: 30px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.modal-input {
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#modal-checkbox {
+    cursor: pointer;
+}
+
+.login {
+    color: azure;
+    background-color: aqua;
+    width: 60%;
+    margin-left: 20%;
+    font-size: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.login:hover {
+    background-color: rgb(72, 172, 172);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-150px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
