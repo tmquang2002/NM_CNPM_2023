@@ -18,6 +18,7 @@ html{
     height: 100px;
     background-color: rgb(237, 100, 221);
     position: relative;
+    position: fixed;
 }
 
 #nav{
@@ -137,18 +138,6 @@ html{
 
 
 
-/*.sign_in_button{
-    background: none;
-    outline: none;
-    border: none;
-    width: 10px;
-    font-size: 20px;
-    margin-top: -10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-} */
 
 
 .modal {
