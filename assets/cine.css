@@ -17,13 +17,16 @@ html{
     width: 100vw;
     height: 100px;
     background-color: rgb(237, 100, 221);
-    /* position: relative; */
+    position: relative;
 }
 
 #nav{
     display: inline-block;
+    position: absolute;
     background-color: black;
     border-radius: 50px;
+    bottom: 5px;
+    right: 1%;
 }
  
 
@@ -54,7 +57,7 @@ html{
     border-radius: 40px;
     display: inline-block;
     top: 6px;
-    right: 4%;
+    right: 5%;
     justify-items: center;
 }
 
@@ -96,27 +99,43 @@ html{
     z-index: 1;
     font-size: 20px;
     color: #fff;
-    padding: 10px;
+    padding: 10px; 
     border-radius: 50px;
 }
 
 #account{
     position: absolute;
-    background: #fff;
+    background: none;
     height: 30px;
     padding: 5px;
     border-radius: 40px;
     display: inline-block;
+    top: 4px;
+    right:1%;
     justify-items: center;
 }
 
-/* #account .i_log2 {
-    font-size: 0px;
-} */
-
-.sign_in_button .i_log1{
-    background-color: red;
+#account .sign_in_button{
+    background: none;
+    border: none;
+    font-size: x-large;
+    color:rgb(31, 236, 96);
 }
+
+#account .sign_in_button:hover .i_log1 {           /*trỏ vào log1 thì biến mất*/
+    font-size: 0px; 
+}
+
+#account .sign_in_button .i_log2 {              /*cài đặt log2*/
+    font-size: 0;
+} 
+
+#account .sign_in_button:hover .i_log2 {           /*trỏ vào log1 thì biến mất*/
+    font-size: x-large;
+}
+
+
+
 
 /*.sign_in_button{
     background: none;
