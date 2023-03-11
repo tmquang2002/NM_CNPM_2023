@@ -99,3 +99,35 @@ html{
     padding: 10px;
     border-radius: 50px;
 }
+
+#account{
+    position: absolute;
+    background: #fff;
+    height: 30px;
+    padding: 5px;
+    border-radius: 40px;
+    display: inline-block;
+    justify-items: center;
+}
+
+/* #account .i_log2 {
+    font-size: 0px;
+} */
+
+.sign_in_button .i_log1{
+    background-color: red;
+}
+
+/*.sign_in_button{
+    background: none;
+    outline: none;
+    border: none;
+    width: 10px;
+    font-size: 20px;
+    margin-top: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+} */
+
