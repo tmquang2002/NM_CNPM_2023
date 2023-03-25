@@ -10,5 +10,7 @@ export default function Home() {
     <div className={styles.title}>
       <Header/>
       <p>hello world</p></div>
+      <p>hello </p>
+
   )
 }

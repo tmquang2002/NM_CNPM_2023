@@ -1,7 +1,11 @@
 import styles from './header.module.css'
-import { fbIcon, searchIcon } from '@/assets/svgs'
+import { fbIcon, searchIcon, instaIcon } from '@/assets/svgs'
 import Image from 'next/image'
 export default function Header () {
+
+    // react 
+
+
     return (
         <div className={styles.header}>
             <p>Header</p>
