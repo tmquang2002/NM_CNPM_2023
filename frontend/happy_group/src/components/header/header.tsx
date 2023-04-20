@@ -8,7 +8,7 @@ import UserAPI from '@/app/api/userAPI';
 import { logOut } from '@/redux/apiRequests';
 import { createAxios } from '@/createInstance';
 import { logOutSuccess } from '@/redux/authSlice';
-import usewindowe
+// import usewindowe
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchComp from '../search/search';
