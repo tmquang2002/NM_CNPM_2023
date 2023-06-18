@@ -5,11 +5,11 @@ const AdminAPI = {
     const url = `${apiV1}/showtimes/`;
     return get(url, "");
   },
-
-  getScheByID: function (id: string){
-    const url =`${apiV1}/schedules/showtime/${id}`;
-    return get (url,"");
-  },
+  
+  addSchedule: function ( data: any,manager : string,) {
+    const url = `${apiV1}/schedules/`;
+    return post(url, data,manager);
+  }
 
 
 }

@@ -44,3 +44,7 @@
 .add_sheet select{
     width: 100%;
 }
+
+.filter{
+    color: black;
+}

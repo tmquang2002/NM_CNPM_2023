@@ -9,15 +9,20 @@ import AdminAPI from "@/app/api/adminAPI";
 import { add_ad } from "@/assets/svgs";
 import theatreAPI from "@/app/api/theatreAPI";
 import movieAPI from "@/app/api/movieAPI";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
 export default function Schedule_Admin (){
    const [isAddingSchedule, setIsAddingSchedule]= useState(0) // 0: khong, 1: co
-   const [movieList, setMovieList] = useState([]);
-   const [theatreList, setTheatreList]= useState([])
    const [Schedules, take] = useState<any[]>([]); ///
-   const [SById, setSByID] = useState<any[]>([]); ///
+
+  const manager = useSelector((state: any ) => state.auth.login.currentUser)
+  console.log(manager)
+
   let count=1;
    const Schedule = async () => {
      const ScheduleData = await AdminAPI.getAllShowtime();
@@ -25,38 +30,33 @@ export default function Schedule_Admin (){
      take(ScheduleData.data);
      }
 
+     const PSche = async(Sche :any, token: string) => {
+      const res = await AdminAPI.addSchedule(Sche,token)
+      console.log('res',res)
+    }
+
+
+
+
      useEffect(()=>{
       Schedule();
   },[])
   // fetch data
-  useEffect (()=> {
-    const fetchTheatreList= async()=> {
-      const res= await theatreAPI.getAllTheatres();
-      setTheatreList(res.data)
-      console.log("theatres : ", res.data);
-    }
-    const fetchMovieList = async() => {
-      const res =await movieAPI.getAllMovies();
-      setMovieList(res.data);
-      console.log("Movies : ", res.data);
-    }
-    
-    // SchById();
-    fetchMovieList();
-    fetchTheatreList();
-  },[])
   /// new schedule
   const maxtheatre=10
   const [newsch_movieID, setNewsch_movieID] = useState("")
   const [newsch_movieName, setNewsch_movieName] = useState("")
   const [newsch_startDate, setNewsch_startDate]= useState("");
   const [newsch_endDate, setNewsch_endDate]= useState("");
-  const [newsch_times, setNewsch_times]= useState([]);
+  const [newsch_times, setNewsch_times]= useState("");
   const [newnumtimes, setNewNumTimes] = useState(1)
   const [newtimes, setNewTimes] = useState([""])
   const [newTheatre, setNewTheatre] = useState([""])
   const [newNumTime, setNewNumTime] = useState<any[]>([1])
-  const [newTime, setNewTime] = useState<any[][]>([[""]])
+  const [newTime, setNewTime] = useState<string[][]>([[""]])
+
+  const [selectedDate, setSelectedDate] = useState("");
+const [isDateSelected, setIsDateSelected] = useState(false);
 
   const Cinema = ['Happy Us Theatre Quận 1', 
                   'Happy Us Theatre Quận 2', 
@@ -69,23 +69,36 @@ export default function Schedule_Admin (){
     setIsAddingSchedule(1);
    
   }
-  const handleSaveAddingButton = () => {
+  // const handleSaveAddingButton = () => {
+  //   const data = {
+  //     showtimeId: newsch_movieID,
+  //     date: newsch_times,
+  //     theatre: newTheatre,
+  //     time: newTime[0],
+  //   };
+  //   console.log(data);
+  //   PSche(data, manager.token);
+  // };
+
+  const handleSaveAddingButton = async () => {
     const data = {
-      movieName: newsch_movieName,
-      startDate: newsch_startDate,
-      endDate: newsch_endDate,
-      isActive: true,
-      times: newsch_times.map((date, idxtimes) => {
-        return {
-          _id: `648a020e27d32dfd9816931${idxtimes}`,
-        showtimeId: "6489ec98ba4769263484ac62",
-        date: date,
-        theatreName: newTheatre,
-        time: newTime[idxtimes],
-        };
-      }),
+      showtimeId: newsch_movieID,
+      date: newsch_times,
+      theatre: newTheatre,
+      time: newTime[0],
     };
-    console.log(data);
+  
+    try {
+      await PSche(data, manager.token);
+      toast.success('Thành công'); 
+    } catch (error) {
+      toast.error('Thất bại');
+    }
+  };
+
+  const handleDateFilterChange = (e) => {
+    setSelectedDate(e.target.value);
+    setIsDateSelected(true);
   };
   const handleIncreaseDays=useCallback(()=>{
   
@@ -100,8 +113,10 @@ export default function Schedule_Admin (){
 
 
   const handleMovieChange = (event) => {
-    const selectedMovieTitle = event.target.value;
-    setNewsch_movieName(selectedMovieTitle);
+    const selectedMovieId = event.target.value;
+    const selectedMovieName = event.target.options[event.target.selectedIndex].text;
+    setNewsch_movieID(selectedMovieId);
+    setNewsch_movieName(selectedMovieName);
   };
 
 
@@ -112,13 +127,8 @@ export default function Schedule_Admin (){
   const handleEndDateChange = (value) => {
     setNewsch_endDate(value);
   };
-
-  const handleDayRowChange = (idxtimes, event) => {
-    const value = event.target.value;
-    const formattedDate = value.replaceAll("-", "/");
-    const newTimesCopy = [...newsch_times];
-    newTimesCopy[idxtimes] = formattedDate;
-    setNewsch_times(newTimesCopy);
+  const handleDayRowChange = (idxtimes, e) => {
+    setNewsch_times(e.target.value);
   };
 
   const handleTheatreChange = (event) => {
@@ -150,6 +160,10 @@ export default function Schedule_Admin (){
 
     return(
       <div  className={styles.lay1}>
+        <div className={styles.filter}>
+          Tìm Kiếm Theo ngày: 
+          <input type="date" onChange={handleDateFilterChange} />
+        </div>
         <table className={styles.table}>
   <thead>
     <tr>
@@ -180,9 +194,9 @@ export default function Schedule_Admin (){
                 {/* <label htmlFor="">Choose movie</label> */}
                 <select name="movies" id="movies" onChange={handleMovieChange}>
                 <option value="" hidden>Chọn phim</option> 
-                  {Schedules.map((movie: any)=> (
-                    <option key = {movie}>{ movie.movieName}</option>
-                  ))}
+                {Schedules.map((movie: any) => (
+                  <option value={movie.schedules[0]?.showtimeId} key={movie}>{movie.movieName}</option>
+                ))}
                 </select>
               </td>
               {/* start date */}
@@ -239,37 +253,49 @@ export default function Schedule_Admin (){
      
     {/* ))
   ))} */}
-  {Schedules.map((schedule, index) => (schedule.schedules.length >0)?( 
-    schedule.schedules.map((timeSlot:any, timeIndex:any) => (
-      <tr key={`${index}-${timeIndex}`}>
-        {timeIndex === 0 ? (
-          <>
-            <td rowSpan={schedule.schedules.length}>{count++}</td>
-            <td rowSpan={schedule.schedules.length}>{schedule.movieName}</td>
-            <td rowSpan={schedule.schedules.length}>{schedule.dateRange.start.substring(0,10)}</td>
-            <td rowSpan={schedule.schedules.length}>{schedule.dateRange.end.substring(0,10)}</td>
-          </>
-        ) : null}
-       <td>{timeSlot.date.substring(0,10)}</td>
-        <td>{timeSlot.theatre}</td>
-       
-        <td>
-          <ul>
-            {timeSlot.time.map((time, index) => (
-              <li key={index}>
-                <span key={index}>{time} </span>
-              </li>
-            ))}
-          </ul>
-        </td>
-        <td>opt</td>
-      </tr>
-    ))
-  ):(<></>))
-  }
+{Schedules.map((schedule, index) => {
+  return schedule.schedules.length > 0 ? (
+    schedule.schedules.map((timeSlot, timeIndex) => {
+      const showRow = !isDateSelected || timeSlot.date.substring(0, 10) === selectedDate;
+      const isFirstTimeSlot = timeIndex === 0;
+      
+      return (
+        <tr key={`${index}-${timeIndex}`}>
+          {isFirstTimeSlot && (
+            <>
+              <td rowSpan={schedule.schedules.length}>{count++}</td>
+              <td rowSpan={schedule.schedules.length}>{schedule.movieName}</td>
+              <td rowSpan={schedule.schedules.length}>{schedule.dateRange.start.substring(0, 10)}</td>
+              <td rowSpan={schedule.schedules.length}>{schedule.dateRange.end.substring(0, 10)}</td>
+            </>
+          )}
+          {showRow && (
+            <>
+              <td>{timeSlot.date.substring(0, 10)}</td>
+              <td>{timeSlot.theatre}</td>
+              <td>
+                <ul>
+                  {timeSlot.time.map((time, index) => (
+                    <li key={index}>
+                      <span key={index}>{time} </span>
+                    </li>
+                  ))}
+                </ul>
+              </td>
+              <td>opt</td>
+            </>
+          )}
+        </tr>
+      );
+    })
+  ) : (
+    <></>
+  );
+})}
+
 </tbody>
 </table>
-
+<ToastContainer />
 
 
       </div> 
